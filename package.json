@@ -14,7 +14,10 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "serve:prod": "ng serve --configuration production",
-    "setup": "npm install && ng build"
+    "setup": "npm install && ng build",
+    "deploy": "npm run build:prod && firebase deploy",
+    "firebase:init": "firebase login && firebase init",
+    "firebase:deploy": "firebase deploy"
   },
   "dependencies": {
     "@angular/animations": "^17.0.0",
