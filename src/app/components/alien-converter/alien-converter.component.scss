@@ -224,6 +224,42 @@
       }
     }
   }
+
+  .explanation-box {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 1px solid #93c5fd;
+    animation: fadeIn 0.4s ease-out;
+
+    .explanation-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1e40af;
+      margin-bottom: 8px;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        color: #3b82f6;
+      }
+    }
+
+    .explanation-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1e3a8a;
+      text-align: center;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 1px;
+    }
+  }
 }
 
 // Examples Section

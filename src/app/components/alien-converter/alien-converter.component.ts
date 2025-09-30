@@ -12,7 +12,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { alienToInt, ALIEN_SYMBOLS, AlienSymbol } from '../../utils/alien-to-int.util';
+import { alienToInt, ALIEN_SYMBOLS, AlienSymbol, SYMBOL_VALUE_MAP, isValidSubtractivePair } from '../../utils/alien-to-int.util';
 
 interface ConversionResult {
   value: number | null;
@@ -229,5 +229,85 @@ export class AlienConverterComponent implements OnInit {
    */
   hasSuccess(): boolean {
     return this.result.value !== null && !this.result.error;
+  }
+
+  /**
+   * Parses the alien numeral into parts for explanation
+   */
+  private parseAlienNumeral(s: string): Array<{ token: string, value: number }> {
+    const input = s.trim().toUpperCase();
+    const parts: Array<{ token: string, value: number }> = [];
+    let i = 0;
+
+    while (i < input.length) {
+      const currentChar = input[i];
+      const currentValue = SYMBOL_VALUE_MAP.get(currentChar)!;
+
+      // Check if it's part of a subtractive pair
+      if (i + 1 < input.length) {
+        const nextChar = input[i + 1];
+        const nextValue = SYMBOL_VALUE_MAP.get(nextChar);
+
+        if (nextValue && nextValue > currentValue) {
+          if (isValidSubtractivePair(currentChar, nextChar)) {
+            // Valid subtractive pair
+            parts.push({
+              token: currentChar + nextChar,
+              value: nextValue - currentValue
+            });
+            i += 2;
+            continue;
+          }
+        }
+      }
+
+      // Check if we can group consecutive same characters
+      let count = 1;
+      while (i + count < input.length && input[i + count] === currentChar) {
+        count++;
+      }
+
+      const token = currentChar.repeat(count);
+      parts.push({
+        token: token,
+        value: currentValue * count
+      });
+      i += count;
+    }
+
+    return parts;
+  }
+
+  /**
+   * Gets the explanation of the conversion
+   */
+  getExplanation(): string {
+    const input = this.alienInput.value?.trim().toUpperCase();
+    if (!input || this.result.value === null) {
+      return '';
+    }
+
+    try {
+      const parts = this.parseAlienNumeral(input);
+      
+      if (parts.length === 0) {
+        return '';
+      }
+
+      // Build explanation string
+      const explanationParts = parts.map(part => `${part.token} = ${part.value}`);
+      
+      // Join with commas, and use "and" before the last part if there are multiple parts
+      if (explanationParts.length === 1) {
+        return explanationParts[0];
+      } else if (explanationParts.length === 2) {
+        return explanationParts.join(' and ');
+      } else {
+        const lastPart = explanationParts.pop();
+        return explanationParts.join(', ') + ' and ' + lastPart;
+      }
+    } catch (error) {
+      return '';
+    }
   }
 }

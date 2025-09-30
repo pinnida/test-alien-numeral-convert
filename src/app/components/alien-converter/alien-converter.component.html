@@ -1,12 +1,8 @@
 <div class="converter-container">
   <mat-card class="main-card">
     <mat-card-header>
-      <mat-card-title class="main-title">
-        <mat-icon class="title-icon">translate</mat-icon>
-        Alien Numerals Converter
-      </mat-card-title>
       <mat-card-subtitle>
-        Convert custom Alien Numerals to integers using subtractive notation
+        Alien Numerals Converter
       </mat-card-subtitle>
     </mat-card-header>
 
@@ -18,7 +14,7 @@
         <div class="form-column">
           <mat-card class="form-card">
             <mat-card-header>
-              <mat-card-title>Convert Alien Numerals</mat-card-title>
+              <mat-card-subtitle>Convert Alien Numerals</mat-card-subtitle>
             </mat-card-header>
             
             <mat-card-content>
@@ -72,6 +68,15 @@
                     <div class="result-label">Result:</div>
                     <div class="result-value">{{ getResultText() }}</div>
                   </div>
+                  
+                  <!-- Explanation section -->
+                  <div class="explanation-box" *ngIf="hasSuccess()">
+                    <div class="explanation-label">
+                      <mat-icon>info_outline</mat-icon>
+                      Explanation:
+                    </div>
+                    <div class="explanation-value">{{ getExplanation() }}</div>
+                  </div>
                 </div>
               </form>
 
@@ -101,10 +106,10 @@
         <div class="table-column">
           <mat-card class="table-card">
             <mat-card-header>
-              <mat-card-title>
+              <mat-card-subtitle>
                 <mat-icon>table_chart</mat-icon>
                 Alien Numeral Symbols
-              </mat-card-title>
+              </mat-card-subtitle>
             </mat-card-header>
             
             <mat-card-content>
@@ -132,7 +137,7 @@
       </div>
 
       <!-- Rules section (expandable) -->
-      <mat-expansion-panel class="rules-panel">
+      <!-- <mat-expansion-panel class="rules-panel">
         <mat-expansion-panel-header>
           <mat-panel-title>
             <mat-icon>help_outline</mat-icon>
@@ -187,7 +192,7 @@
             </div>
           </div>
         </div>
-      </mat-expansion-panel>
+      </mat-expansion-panel> -->
     </mat-card-content>
   </mat-card>
 </div>
